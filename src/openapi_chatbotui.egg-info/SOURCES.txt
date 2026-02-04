@@ -4,9 +4,14 @@ src/app/__init__.py
 src/app/chat.py
 src/app/main.py
 src/app/graph/__init__.py
+src/app/graph/prompt.py
+src/app/graph/rag_graph.py
 src/app/ingest/__init__.py
 src/app/retrieval/__init__.py
+src/app/retrieval/retriever.py
+src/app/retrieval/self_query.py
 src/app/utils/__init__.py
+src/app/utils/chunking.py
 src/app/utils/settings.py
 src/openapi_chatbotui.egg-info/PKG-INFO
 src/openapi_chatbotui.egg-info/SOURCES.txt
