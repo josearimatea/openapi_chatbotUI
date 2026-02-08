@@ -87,7 +87,7 @@ def retrieve(
         # alguns preferem converter para distância: 1 - score
         results.append({
             "score": round(float(score), 4),
-            "text": doc.page_content,
+            "text": doc.text,
             "metadata": doc.metadata,
         })
 
@@ -111,7 +111,7 @@ def get_relevant_documents(query: str) -> List[Document]:
         metadata["score"] = res["score"]
 
         doc = Document(
-            page_content=res["text"],
+            text=res["text"],
             metadata=metadata
         )
         documents.append(doc)
