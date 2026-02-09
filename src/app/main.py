@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 # from .chat import ask_gpt
+from app.chat import ask_gpt
 from app.graph.rag_graph import app as graph_app
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -23,5 +24,6 @@ def home():
 
 @app.post("/chat")
 def chat(pergunta: Pergunta):
-    resposta = graph_app.invoke(pergunta.mensagem)
+    # resposta = graph_app.invoke(pergunta.mensagem)
+    resposta = ask_gpt(pergunta.mensagem)
     return {"resposta": resposta}
