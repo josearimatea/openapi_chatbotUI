@@ -11,6 +11,7 @@ CHUNKS_FILE = '../../../files/tspec_chunks.pkl'
 QDRANT_HOST = 'localhost'
 QDRANT_PORT = 6333
 COLLECTION_NAME = '3gpp_rel18_28'
+NUMBER_RETRIEVE_CHUNKS = 10
 
 # Load OpenAI API key from .env
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
