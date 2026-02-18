@@ -3,11 +3,16 @@ pyproject.toml
 src/app/__init__.py
 src/app/chat.py
 src/app/main.py
+src/app/main_old.py
 src/app/graph/__init__.py
 src/app/graph/prompt.py
 src/app/graph/rag_graph.py
+src/app/graph/rag_graph_old.py
+src/app/graph/rag_graph_old_2.py
 src/app/ingest/__init__.py
+src/app/ingest/qdrant_factory.py
 src/app/retrieval/__init__.py
+src/app/retrieval/hard_retriever.py
 src/app/retrieval/retriever.py
 src/app/retrieval/self_query.py
 src/app/utils/__init__.py

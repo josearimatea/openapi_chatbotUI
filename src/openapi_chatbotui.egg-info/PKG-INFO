@@ -63,6 +63,17 @@ $ docker run -d --name qdrant-local \
 
 1 - Rodando Backend e Frontend:
 
+Rode o Qdrant:
+
+$ docker run -d --name qdrant-local \
+  -p 6333:6333 \
+  -p 6334:6334 \
+  -v $(pwd)/qdrant_storage:/qdrant/storage:z \
+  qdrant/qdrant
+
+$ docker start qdrant-local
+
+
 Terminal 1 – Backend FastAPI
 $ uv run uvicorn app.main:app --reload --port 5000
 
