@@ -11,7 +11,7 @@ from langgraph.graph import StateGraph, END
 from langgraph.graph.message import add_messages
 
 from app.retrieval.retriever import get_relevant_documents
-from app.utils.settings import OPENAI_API_KEY, logger
+from app.config.settings import OPENAI_API_KEY, logger
 
 
 class RAGState(TypedDict):

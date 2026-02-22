@@ -1,3 +1,5 @@
+# Only used with SelfQueryRetriever - not used for direct Qdrant retrieval using vector_store.similarity_search
+
 from langchain.chains.query_constructor.base import AttributeInfo
 
 metadata_field_info = [

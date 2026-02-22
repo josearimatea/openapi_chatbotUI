@@ -6,7 +6,7 @@ Centralizes creation of embeddings and vector store to avoid duplication.
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_qdrant import QdrantVectorStore
 from qdrant_client import QdrantClient
-from app.utils.settings import QDRANT_HOST, QDRANT_PORT, COLLECTION_NAME
+from app.config import QDRANT_HOST, QDRANT_PORT, COLLECTION_NAME
 
 class QdrantFactory:
     def __init__(self, device: str = "cpu"):

@@ -10,7 +10,7 @@ from langchain.retrievers.self_query.base import SelfQueryRetriever
 from langchain_core.documents import Document
 from qdrant_client.http.models import Filter, FieldCondition, MatchValue
 
-from app.utils.settings import llm, device, logger
+from app.config.settings import llm, device, logger
 from app.ingest.qdrant_factory import QdrantFactory
 from app.retrieval.self_query import metadata_field_info, document_content_description
 
@@ -100,8 +100,8 @@ def retrieve(
         }
 
     logger.info(f"Retrieval finished. Found {len(result['docs'])} documents.")
-    logger.debug(f"Generated query: {result['generated_query']}")
-    logger.debug(f"Generated filter: {result['generated_filter']}")
+    logger.info(f"Generated query: {result['generated_query']}")
+    logger.info(f"Generated filter: {result['generated_filter']}")
 
     return result
 
@@ -119,7 +119,8 @@ def get_relevant_documents(
     result = retrieve(query=query, k=k, filters=filters)
 
     # Format each document as string (header + content)
-    formatted_strings = [format_doc_as_string(doc) for doc in result["docs"]]
+    # formatted_strings = [format_doc_as_string(doc) for doc in result["docs"]]
+    formatted_strings = format_doc_as_string(result["docs"])
 
     logger.info(f"get_relevant_documents: formatted {len(formatted_strings)} strings for prompt")
 

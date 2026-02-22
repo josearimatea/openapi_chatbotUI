@@ -9,14 +9,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from app.graph.rag_graph import run_rag
-from app.utils.settings import logger
+from app.config.settings import logger
 
 app = FastAPI(title="3GPP RAG Chatbot API")
 
 # Enable CORS for frontend access (Streamlit, etc.)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Restrict in production (e.g., ["http://localhost:8501"])
+    allow_origins=["*"],  # Restrict in production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

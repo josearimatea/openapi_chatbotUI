@@ -73,7 +73,33 @@ torchaudio = [
     { index = "pytorch-cpu",   marker = "sys_platform == 'darwin'" }
 ]
 
-[tool.uv.workspace]
-members = [
-    "."
-]
+# [tool.uv.workspace]
+# members = [
+#     "."
+# ]
+
+# ────────────────────────────────────────────────────────────────
+# Build system configuration
+# Required for proper package discovery with src/ layout.
+# This enables clean editable installs so imports work reliably
+# (e.g. from app.graph.rag_graph import ... or whatever your modules are).
+# ────────────────────────────────────────────────────────────────
+[build-system]
+requires = ["setuptools>=77.0.3"]
+build-backend = "setuptools.build_meta"
+
+# ────────────────────────────────────────────────────────────────
+# Setuptools configuration for src/ layout
+# Tells setuptools where to find the packages (src/app in your case).
+# This makes `uv sync` and `uv pip install -e .` create correct .pth files
+# for imports.
+# ────────────────────────────────────────────────────────────────
+[tool.setuptools.packages.find]
+where = ["src"]          # look for packages inside the src/ folder
+# namespaces = false       # set to true only if you use namespace packages (rare)
+# include = ["app*"]     # uncomment if you want to be more explicit (optional)
+
+# Optional: if you ever want the package name to match the project name
+# (import openapi_chatbotui.xxx instead of import app.xxx), just rename
+# the folder src/app → src/openapi_chatbotui later. For now this config
+# works perfectly with your current src/app structure.

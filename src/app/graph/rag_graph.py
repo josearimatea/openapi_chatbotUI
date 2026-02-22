@@ -14,7 +14,7 @@ from langchain_openai import ChatOpenAI
 from langgraph.graph import StateGraph, END
 from langgraph.graph.message import add_messages
 from app.retrieval.retriever import get_relevant_documents
-from app.utils.settings import llm, logger, NUMBER_RETRIEVE_CHUNKS
+from app.config import llm, logger, NUMBER_RETRIEVE_CHUNKS
 
 class RAGState(TypedDict):
     question: str
