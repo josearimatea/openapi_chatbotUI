@@ -17,6 +17,7 @@ from .settings import (
 )
 from .hardware import device
 from .llm_config import llm
+from .logging_config import log_level
 
 _logging_configured = False
 
@@ -57,4 +58,5 @@ __all__ = [
     "llm",
     "factory",
     "vector_store",
+    "log_level",
 ]

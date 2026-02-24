@@ -8,6 +8,9 @@ Import this in entry points to apply config globally.
 
 import logging
 import os
+from dotenv import load_dotenv  # Load .env file
+
+load_dotenv()  # Ensure .env is loaded before os.getenv
 
 # LOG_LEVEL Options: "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"
 # Default usage is INFO or DEBUG for development. Can be set in .env for flexibility.

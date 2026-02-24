@@ -7,6 +7,9 @@ No side effects on import.
 
 import os
 from .paths import *  # Import all paths and settings from paths.py for centralization
+from dotenv import load_dotenv  # Load .env file
+
+load_dotenv()  # Ensure .env is loaded before os.getenv
 
 # APP_ENV is set in .env and determines which dataset and collection to use
 # APP_ENV Options: "prod", "test" or "test_file"

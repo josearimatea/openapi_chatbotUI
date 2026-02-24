@@ -9,9 +9,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from app.graph.rag_graph import run_rag
-from app.config import get_logger
+from app.config import get_logger, APP_ENV, log_level
 
 logger = get_logger(__name__)
+
+logger.debug("Debug message → se você vir isso, LOG_LEVEL está realmente em DEBUG")
+logger.info(f"APP_ENV={APP_ENV} | LOG_LEVEL={log_level}")
 
 app = FastAPI(title="3GPP RAG Chatbot API")
 

@@ -1,20 +1,20 @@
-# Para reprodução
+# For Reproduction
 
-## Setup de Desenvolvimento
+## Development Setup
 
-1. Clone o repositório:
+1. Clone the repository:
 $ git clone https://github.com/seu-usuario/openapi_chatbotUI.git
 $ cd openapi_chatbotUI
    
-2. Crie e sincronize o ambiente:
+2. Create and sync the environment:
 $ uv sync
 
-3. Instale o projeto em modo editável (para imports funcionarem):
+3. Install the project in editable mode (so imports work):
 $ uv pip install --editable .
 
-## Rodar Qdrant
+## Run Qdrant
 
-1 - Necessário rodar o docker do Qadrant para poder usar Embeddings:
+1 - You need to run the Qdrant Docker container in order to use embeddings:
 
 $ docker pull qdrant/qdrant
 
@@ -24,27 +24,24 @@ $ docker run -d --name qdrant-local \
   -v $(pwd)/qdrant_storage:/qdrant/storage:z \
   qdrant/qdrant
 
-2 - Precisa criar os embeddings novamente na nova máquina ou servidor que irá rodar o sistema.
+2 - You must recreate the embeddings on the new machine or server that will run the system.
 
-# Para uso
+# For Usage
 
-1 - Rodando Backend e Frontend:
+1 - Running Backend and Frontend:
 
-Rode o Qdrant:
-
-$ docker run -d --name qdrant-local \
-  -p 6333:6333 \
-  -p 6334:6334 \
-  -v $(pwd)/qdrant_storage:/qdrant/storage:z \
-  qdrant/qdrant
+i) First, run Qdrant:
 
 $ docker start qdrant-local
 
+ii) Then run the Backend and Frontend setup:
 
-Terminal 1 – Backend FastAPI
+Terminal 1 – FastAPI Backend
 $ uv run uvicorn app.main:app --reload --port 5000
 
-Terminal 2 – Frontend Streamlit
+Terminal 2 – Streamlit Frontend
 $ uv run streamlit run frontend/app.py --server.port 5001
 
+Or use the script that starts both:
 
+uv run python scripts/start_app.py
