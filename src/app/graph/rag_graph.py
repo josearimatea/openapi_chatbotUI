@@ -10,15 +10,17 @@ If technical → sets needs_retrieval=True and empty response.
 from typing import Annotated, List, Dict, TypedDict, Generator, Any
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
-from langchain_openai import ChatOpenAI
 from langgraph.graph import StateGraph, END
 from langgraph.graph.message import add_messages
+
 from app.retrieval.retriever import get_relevant_documents
-from app.config import llm, logger, NUMBER_RETRIEVE_CHUNKS
+from app.config import llm, get_logger, NUMBER_RETRIEVE_CHUNKS
+
+logger = get_logger(__name__)
 
 class RAGState(TypedDict):
     question: str
-    context: str  # now string (joined formatted docs)
+    context: str
     answer: Generator[str, None, None]
     messages: Annotated[List[Dict], add_messages]
     needs_retrieval: bool

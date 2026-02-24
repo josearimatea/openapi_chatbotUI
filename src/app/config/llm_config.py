@@ -7,11 +7,11 @@ Depends on settings (e.g., API key).
 
 from langchain_openai import ChatOpenAI
 
-from .settings import OPENAI_API_KEY
+from .settings import OPENAI_API_KEY, MODEL, TEMPERATURE
 
 # LLM instance (global, reusable)
 llm = ChatOpenAI(
-    model="gpt-4.1-mini",
-    temperature=0,
+    model=MODEL,
+    temperature=TEMPERATURE,
     api_key=OPENAI_API_KEY
 )

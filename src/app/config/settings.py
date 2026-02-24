@@ -10,7 +10,7 @@ from .paths import *  # Import all paths and settings from paths.py for centrali
 
 # APP_ENV is set in .env and determines which dataset and collection to use
 # APP_ENV Options: "prod", "test" or "test_file"
-APP_ENV = os.getenv("APP_ENV", "prod")  # Default to 'prod'
+APP_ENV = os.getenv("APP_ENV", "test_file")  # Default to 'test_file' for safety
 
 # TSPEC_DATA settings
 TSPEC_DATA = TSPEC_DATA_TEST_FILE if APP_ENV == 'test_file' else TSPEC_DATA_TEST if APP_ENV == 'test' else TSPEC_DATA_PROD
@@ -30,3 +30,7 @@ NUMBER_RETRIEVE_CHUNKS = 10
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 if not OPENAI_API_KEY:
     raise ValueError("OPENAI_API_KEY not found in .env file")
+
+# LLM Settings
+MODEL = "gpt-4.1-mini"
+TEMPERATURE = 0

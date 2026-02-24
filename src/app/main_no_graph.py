@@ -1,8 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-# from .chat import ask_gpt
 from app.chat import ask_gpt
-from app.graph.rag_graph_old import app as graph_app
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="Chatbot Simples - GPT")

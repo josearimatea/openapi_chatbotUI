@@ -1,7 +1,7 @@
 # frontend/app.py
 """
 Streamlit frontend for the 3GPP Chatbot RAG.
-Connects to FastAPI backend at http://localhost:8000/chat.
+Connects to FastAPI backend at http://localhost:5000/chat.
 """
 
 import streamlit as st

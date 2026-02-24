@@ -3,6 +3,10 @@ Retriever module for semantic search from Qdrant.
 - retrieve: core logic (manual filter or deterministic extraction + manual search)
 - get_relevant_documents: reuses retrieve, formats each doc as string with metadata header,
   and returns List[str] ready for prompt/context (used by LangGraph)
+
+This retriever hard drops SelfQueryRetriever in favor of a simpler, deterministic approach
+However, the principal and best script still remains retriever.py, which is used by the graph.
+This retriever_hard.py is a simplified version for testing and comparison.
 """
 
 from typing import Dict, List, Optional, Any

@@ -1,4 +1,4 @@
-# main.py
+# src/app/main.py
 """
 Main FastAPI application for the 3GPP Chatbot RAG API.
 Provides /chat endpoint using the LangGraph RAG pipeline.
@@ -9,7 +9,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from app.graph.rag_graph import run_rag
-from app.config.settings import logger
+from app.config import get_logger
+
+logger = get_logger(__name__)
 
 app = FastAPI(title="3GPP RAG Chatbot API")
 
