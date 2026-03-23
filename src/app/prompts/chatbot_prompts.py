@@ -35,6 +35,7 @@ ORCHESTRATOR_PROMPT = ChatPromptTemplate.from_messages([
                "- Query: 'What is the input for createMOI?' -> {{\"response\": \"\", \"needs_retrieval\": true}}\n"
                "- Query: 'How are you?' -> {{\"response\": \"I'm good, thanks! Ready to help with 3GPP queries.\", \"needs_retrieval\": false}}\n"
                "- Query: 'Explain 5G beamforming' -> {{\"response\": \"\", \"needs_retrieval\": true}}"),
+    ("placeholder", "{messages}"),
     ("human", "Query: {question}"),
 ]).partial(format_instructions=_orchestrator_parser.get_format_instructions())
 
@@ -52,7 +53,9 @@ ANSWER_PROMPT = ChatPromptTemplate.from_messages([
     ("system", "You are an expert in 3GPP technical specifications. "
                "Answer the question based only on the provided context. "
                "Be precise, technical, and concise. "
+               "Consider the conversation history for context about follow-up questions. "
                "At the end, list sources in format: "
                "(Spec: <spec>, Release: <release>, Series: <series>, Chunk Index: <chunk_index>)."),
+    ("placeholder", "{messages}"),
     ("human", "Question: {question}\n\nContext:\n{context}\n\nAnswer:"),
 ])

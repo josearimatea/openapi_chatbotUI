@@ -5,6 +5,7 @@ Connects to FastAPI backend with real-time streaming via SSE.
 """
 
 import json
+import uuid
 import requests
 import streamlit as st
 
@@ -34,7 +35,15 @@ with st.sidebar:
     st.divider()
 
     if st.button("Clear conversation", use_container_width=True):
+        # Clear backend memory for current thread
+        try:
+            requests.post(f"{BACKEND_URL}/clear", params={"thread_id": st.session_state.thread_id}, timeout=5)
+        except Exception:
+            pass  # Best-effort — even if backend is down, clear the frontend
+        # Reset frontend: new thread_id, empty messages, update URL
         st.session_state.messages = []
+        st.session_state.thread_id = str(uuid.uuid4())
+        st.query_params["thread"] = st.session_state.thread_id
         st.rerun()
 
     st.divider()
@@ -54,6 +63,17 @@ with st.sidebar:
         if st.button("Retry", key="retry_info"):
             del st.session_state.backend_info
             st.rerun()
+
+# ── Session ID for conversation memory ────────────────────────
+# The thread_id is stored in the URL query params (?thread=xxx) so it
+# survives page refreshes (F5). The backend uses it to keep conversation
+# history separate per session (via LangGraph MemorySaver).
+params = st.query_params
+if "thread" in params:
+    st.session_state.thread_id = params["thread"]
+elif "thread_id" not in st.session_state:
+    st.session_state.thread_id = str(uuid.uuid4())
+    st.query_params["thread"] = st.session_state.thread_id
 
 # ── Chat history ─────────────────────────────────────────────
 if "messages" not in st.session_state:
@@ -84,7 +104,7 @@ def stream_response(question: str):
     try:
         with requests.post(
             f"{BACKEND_URL}/chat/stream",
-            json={"message": question},
+            json={"message": question, "thread_id": st.session_state.thread_id},
             stream=True,
             timeout=120,
         ) as resp:

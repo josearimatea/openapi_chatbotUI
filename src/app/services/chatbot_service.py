@@ -26,26 +26,50 @@ Output format:
 from typing import Dict, Any, Generator
 
 from app.config import get_logger
-from app.graph.chatbot_graph import COMPILED_GRAPH
+from app.graph.chatbot_graph import COMPILED_GRAPH, memory
 
 logger = get_logger(__name__)
 
 
-def chat(question: str) -> Generator[Dict[str, Any], None, None]:
+def clear_memory(thread_id: str) -> None:
+    """
+    Deletes all conversation history for a given thread_id from MemorySaver.
+    Called when the user clicks "Clear conversation" in the frontend.
+    """
+    # MemorySaver stores state in memory.storage dict, keyed by thread_id tuple
+    if hasattr(memory, "storage"):
+        keys_to_delete = [k for k in memory.storage if k[0] == thread_id]
+        for key in keys_to_delete:
+            del memory.storage[key]
+        logger.info(f"Cleared {len(keys_to_delete)} checkpoints for thread: {thread_id}")
+    else:
+        logger.warning("MemorySaver has no storage attribute — nothing to clear")
+
+
+def chat(question: str, thread_id: str = "default") -> Generator[Dict[str, Any], None, None]:
     """
     Executes the chatbot RAG pipeline for a given question.
 
     Iterates over COMPILED_GRAPH.stream() events and yields standardized
     {"type": ..., "data": ...} dicts for the API layer.
 
+    Args:
+        question:  the user's message
+        thread_id: unique session ID for conversation memory.
+                   Same thread_id = LLM sees previous messages.
+                   Different thread_id = fresh conversation.
+
     Two possible paths through the graph:
         1. Casual:    orchestrator responds directly → tokens from casual_response
         2. Technical: orchestrator → retrieve → answer → tokens from LLM stream
     """
-    logger.info(f"Chat started for question: {question}")
-    initial_state = {"question": question, "messages": []}
+    logger.info(f"Chat started for question: {question} (thread: {thread_id})")
+    initial_state = {"question": question, "messages": [("human", question)]}
+    config = {"configurable": {"thread_id": thread_id}}
+    logger.debug(f"Initial state: question='{question}', messages={initial_state['messages']}")
 
-    for event in COMPILED_GRAPH.stream(initial_state):
+    for event in COMPILED_GRAPH.stream(initial_state, config=config):
+        logger.debug(f"Graph event keys: {list(event.keys())}")
 
         # Technical path: the answer node produced a streaming generator
         # event looks like: {"answer": {"answer": <generator of str tokens>}}
@@ -57,6 +81,7 @@ def chat(question: str) -> Generator[Dict[str, Any], None, None]:
         # Casual path: orchestrator decided no retrieval needed
         # event looks like: {"orchestrator": {"needs_retrieval": False, "casual_response": "Hi!"}}
         elif "orchestrator" in event:
+            logger.debug(f"Orchestrator output: {event['orchestrator']}")
             casual_response = event["orchestrator"].get("casual_response", "")
             if casual_response and not event["orchestrator"].get("needs_retrieval", True):
                 # Split into words to simulate token-by-token delivery

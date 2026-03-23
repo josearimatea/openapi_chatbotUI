@@ -23,7 +23,7 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 
 from app.api.schemas import Question
-from app.services.chatbot_service import chat as chatbot_chat
+from app.services.chatbot_service import chat as chatbot_chat, clear_memory
 from app.config import get_logger, MODEL, EMBEDDING_MODEL, COLLECTION_NAME
 
 logger = get_logger(__name__)
@@ -52,6 +52,17 @@ def info():
     }
 
 
+@router.post("/clear")
+def clear(thread_id: str = "default"):
+    """
+    Clears conversation memory for a given thread_id.
+    Called by the frontend when the user clicks "Clear conversation".
+    """
+    clear_memory(thread_id)
+    logger.info(f"Memory cleared for thread: {thread_id}")
+    return {"status": "ok"}
+
+
 @router.post("/chat")
 def chat(question: Question):
     """
@@ -73,7 +84,7 @@ def chat(question: Question):
 
         # chatbot_chat() yields dicts like {"type": "token", "data": "word"}
         # We collect all tokens into a single string
-        for event in chatbot_chat(user_query):
+        for event in chatbot_chat(user_query, thread_id=question.thread_id):
             if event["type"] == "token":
                 full_response += event["data"]
             elif event["type"] == "sources":
@@ -116,7 +127,7 @@ def chat_stream(question: Question):
     def event_generator():
         """Wraps chatbot_chat() events in SSE format for the frontend."""
         try:
-            for event in chatbot_chat(user_query):
+            for event in chatbot_chat(user_query, thread_id=question.thread_id):
                 # Each event becomes an SSE line: "data: {"type":"token","data":"word"}\n\n"
                 yield f"data: {json.dumps(event)}\n\n"
             yield f"data: {json.dumps({'type': 'end', 'data': None})}\n\n"

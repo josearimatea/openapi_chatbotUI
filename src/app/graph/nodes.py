@@ -58,7 +58,10 @@ def orchestrator_node(state: dict) -> Dict[str, Any]:
 
     parser = JsonOutputParser()
     chain = ORCHESTRATOR_PROMPT | llm | parser
-    result = chain.invoke({"question": state["question"]})
+    result = chain.invoke({
+        "question": state["question"],
+        "messages": state.get("messages", []),
+    })
 
     needs_retrieval = result.get("needs_retrieval", True)
     casual_response = result.get("response", "")
@@ -102,7 +105,8 @@ def answer_node(state: dict) -> Dict[str, Any]:
     chain = ANSWER_PROMPT | llm | StrOutputParser()
     answer_stream = chain.stream({
         "question": state["question"],
-        "context": state["context"]
+        "context": state["context"],
+        "messages": state.get("messages", []),
     })
     logger.info("Graph - Answer generation started (streaming tokens)...")
     return {"answer": answer_stream}
