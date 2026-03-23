@@ -8,8 +8,14 @@ No side effects on import.
 import os
 
 #--------------------------------------------------------
+# Root definition
+ROOT='../../..'
+
+#--------------------------------------------------------
 # Parent repository
-PARENT_REPO = '../../../../..'
+# Assume that the parent repo is openapi_multiagents, and the folder workspace 
+# contains the children repos. All repos are in openapi_multiagents/workspace/
+PARENT_REPO = f"{ROOT}/../.."
 DATA_DIRECTORY = f"{PARENT_REPO}/Dataset"
 
 # Specific dataset paths
@@ -19,7 +25,6 @@ TSPEC_DATA_PROD = f"{DATA_DIRECTORY}/TSpec-LLM/3GPP-clean"
 
 #--------------------------------------------------------
 # Main Paths repository
-ROOT='../../..'
 SRC_DIRECTORY=f"{ROOT}/src"
 FILES_DIRECTORY=f"{ROOT}/files"
 

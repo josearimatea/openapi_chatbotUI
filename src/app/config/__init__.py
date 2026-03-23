@@ -2,7 +2,7 @@
 """
 Central configuration module.
 Imports and exposes all config components for easy access.
-Usage: from app.config import llm, device, QDRANT_HOST, etc.
+Usage: from app.config import QDRANT_HOST, APP_ENV, get_logger, etc.
 """
 
 from .settings import (
@@ -14,9 +14,9 @@ from .settings import (
     COLLECTION_NAME,
     NUMBER_RETRIEVE_CHUNKS,
     OPENAI_API_KEY,
+    MODEL,
+    EMBEDDING_MODEL,
 )
-from .hardware import device
-from .llm_config import llm
 from .logging_config import log_level
 
 _logging_configured = False
@@ -25,25 +25,18 @@ def get_logger(name):
     """
     Configures logging globally (if not already done) and returns
     a logger with the given name.
-    
-    Use this in notebooks and scripts:
+
+    Usage:
         logger = get_logger(__name__)
-    
-    The name parameter allows module-specific logging (e.g., __name__).
     """
     global _logging_configured
     if not _logging_configured:
-        from . import logging_config  # executes basicConfig, handlers, suppress httpx/httpcore
+        from . import logging_config
         _logging_configured = True
-    
+
     import logging
     return logging.getLogger(name)
 
-# # Error using import QdrantFactory in settings.py due to inexistent Collections at statup, moved to functions that need it
-# # Global QdrantFactory instance (initialized after device)  
-# from app.ingest.qdrant_factory import QdrantFactory
-# factory = QdrantFactory(device=device)
-# vector_store = factory.get_qdrant_vector_store()  # Pre-initialize for efficiency
 
 __all__ = [
     "APP_ENV",
@@ -54,9 +47,8 @@ __all__ = [
     "COLLECTION_NAME",
     "NUMBER_RETRIEVE_CHUNKS",
     "OPENAI_API_KEY",
-    "device",
-    "llm",
-    "factory",
-    "vector_store",
+    "MODEL",
+    "EMBEDDING_MODEL",
     "log_level",
+    "get_logger",
 ]

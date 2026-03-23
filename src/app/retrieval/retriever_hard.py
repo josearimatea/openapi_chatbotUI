@@ -15,9 +15,13 @@ from qdrant_client.http.models import Filter, FieldCondition, MatchValue
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
 
-from app.config.settings import llm, device, logger
-from app.ingest.qdrant_factory import QdrantFactory
-from app.retrieval.self_query import metadata_field_info, document_content_description  # Kept for future use (e.g., if revert to SelfQuery)
+from app.config import get_logger
+from app.infrastructure.llm import llm
+from app.infrastructure.hardware import device
+from app.infrastructure.qdrant import QdrantFactory
+from app.retrieval.self_query import metadata_field_info, document_content_description  # Kept for future use
+
+logger = get_logger(__name__)
 
 
 def extract_filters_from_query(query: str) -> Optional[Dict[str, str]]:

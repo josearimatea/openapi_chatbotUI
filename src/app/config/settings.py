@@ -37,3 +37,6 @@ if not OPENAI_API_KEY:
 # LLM Settings
 MODEL = "gpt-4.1-mini"
 TEMPERATURE = 0
+
+# Embeddings Settings
+EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"

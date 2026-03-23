@@ -14,8 +14,10 @@ from langchain.retrievers.self_query.base import SelfQueryRetriever
 from langchain_core.documents import Document
 from qdrant_client.http.models import Filter, FieldCondition, MatchValue
 
-from app.config import llm, device, get_logger
-from app.ingest.qdrant_factory import QdrantFactory
+from app.config import get_logger
+from app.infrastructure.llm import llm
+from app.infrastructure.hardware import device
+from app.infrastructure.qdrant import QdrantFactory
 from app.retrieval.self_query import metadata_field_info, document_content_description
 
 logger = get_logger(__name__)
